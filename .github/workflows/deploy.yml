@@ -1,0 +1,27 @@
+name: Deploy multi-docker
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    
+    - run: docker build -t cklat/multi-docker-test -f ./client/Dockerfile.dev ./client
+    - run: docker run -e CI=true cklat/multi-docker-test npm test
+
+    - run: docker build -t cklat/multi-client ./client
+    - run: docker build -t cklat/multi-nginx ./nginx
+    - run: docker build -t cklat/multi-server ./server
+    - run: docker build -t cklat/multi-worker ./worker
+    
+    - run: docker push cklat/multi-client
+    - run: docker push cklat/multi-nginx
+    - run: docker push cklat/multi-server
+    - run: docker push cklat/multi-worker
+
+  
