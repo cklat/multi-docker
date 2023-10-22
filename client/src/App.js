@@ -16,7 +16,7 @@ function App() {
             <Link to="/">home</Link>
           </p>
           <p>
-            <Link to="/otherpage">Other page</Link>
+            <Link to="/otherpage">Other pageee</Link>
           </p>
         </body>
         <div>
